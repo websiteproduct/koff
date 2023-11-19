@@ -1,17 +1,19 @@
 .table {
+  width: 100%;
+  border-collapse: collapse;
 
-    // .table__row
+  &__row {
+    border-bottom: 1px solid #eeeff2;
+  }
 
-    &__row {
-    }
+  &__field {
+    padding: 8px 0;
+    color: #969eae;
+  }
 
-    // .table__field
-
-    &__field {
-    }
-
-    // .table__value
-
-    &__value {
-    }
+  &__value {
+    padding: 8px 0;
+    text-align: right;
+    color: #1c1c1c;
+  }
 }

@@ -1,22 +1,22 @@
 .breadcrumb {
+  padding-top: 20px;
 
-    // .breadcrumb__list
+  @media (min-width: 580px) {
+    padding-top: 24px;
+  }
 
-    &__list {
-    }
+  &__list {
+    display: flex;
+    gap: 6px;
+    color: #969eae;
+  }
 
-    // .breadcrumb__item
+  &__item {
+    display: flex;
+    gap: 6px;
+  }
 
-    &__item {
-    }
-
-    // .breadcrumb__link
-
-    &__link {
-    }
-
-    // .breadcrumb__separator
-
-    &__separator {
-    }
+  &__item:last-child &__separator {
+    display: none;
+  }
 }
