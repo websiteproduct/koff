@@ -102,7 +102,7 @@
       </div>
     </div>
 
-    <div class="breadcrumb">
+    <div class="breadcrumb" hidden>
       <div class="container">
         <ul class="breadcrumb__list">
           <li class="breadcrumb__item">
@@ -138,7 +138,7 @@
                     Кресло с подлокотниками
                   </a>
                 </h3>
-  
+
                 <p class="card__price">5&nbsp;000&nbsp;₽</p>
               </div>
 
@@ -165,7 +165,7 @@
                     Кресло с подлокотниками
                   </a>
                 </h3>
-  
+
                 <p class="card__price">5&nbsp;000&nbsp;₽</p>
               </div>
 
@@ -192,7 +192,7 @@
                     Кресло с подлокотниками
                   </a>
                 </h3>
-  
+
                 <p class="card__price">5&nbsp;000&nbsp;₽</p>
               </div>
 
@@ -219,7 +219,7 @@
                     Кресло с подлокотниками
                   </a>
                 </h3>
-  
+
                 <p class="card__price">5&nbsp;000&nbsp;₽</p>
               </div>
 
@@ -238,8 +238,8 @@
       </div>
     </section>
 
-    <section class="product">
-      <div class="container">
+    <section class="product" hidden>
+      <div class="container product__container">
         <h2 class="product__title">Кресло с подлокотниками</h2>
 
         <div class="product__picture">
@@ -378,7 +378,7 @@
     </section>
 
     <section class="cart" hidden>
-      <div class="container cart-container">
+      <div class="container cart__container">
         <h2 class="cart__title">Корзина</h2>
 
         <ul class="cart__products">
@@ -465,43 +465,51 @@
             </label>
           </fieldset>
         </form>
+      </div>
+    </section>
 
-        <div class="cart__info order-info">
-          <h3 class="order-info_subtitle">Заказ успешно размещен</h3>
-          <p class="order-info__price">20 000 ₽</p>
-          <p class="order-info__number">№43435</p>
+    <section class="order">
+      <div class="container order__container">
+        <div class="order__wrapper">
+          <div class="order__body">
+            <div class="order__info">
+              <h3 class="order__subtitle">Заказ успешно размещен</h3>
+              <p class="order__price">20 000 ₽</p>
+            </div>
+            <p class="order__number">№43435</p>
 
-          <div class="order-info__details details">
-            <h4 class="details__title">Данные доставки</h4>
+            <div class="order__details details">
+              <h4 class="details__title">Данные доставки</h4>
 
-            <table class="details__table table">
-              <tr class="table-row">
-                <td class="table-field">Получатель</td>
-                <td class="table-value">Иванов Петр Александрович</td>
-              </tr>
-              <tr class="table-row">
-                <td class="table-field">Телефон</td>
-                <td class="table-value">+7 (737) 346 23 00</td>
-              </tr>
-              <tr class="table-row">
-                <td class="table-field">E-mail</td>
-                <td class="table-value">Ivanov84@gmail.com</td>
-              </tr>
-              <tr class="table-row">
-                <td class="table-field">Адрес доставки</td>
-                <td class="table-value">Москва, ул. Ленина, 21, кв. 33</td>
-              </tr>
-              <tr class="table-row">
-                <td class="table-field">Способ оплаты</td>
-                <td class="table-value">Картой при получении</td>
-              </tr>
-              <tr class="table-row">
-                <td class="table-field">Способ получения</td>
-                <td class="table-value">Доставка</td>
-              </tr>
-            </table>
+              <table class="details__table table">
+                <tr class="table__row">
+                  <td class="table__field">Получатель</td>
+                  <td class="table__value">Иванов Петр Александрович</td>
+                </tr>
+                <tr class="table__row">
+                  <td class="table__field">Телефон</td>
+                  <td class="table__value">+7 (737) 346 23 00</td>
+                </tr>
+                <tr class="table__row">
+                  <td class="table__field">E-mail</td>
+                  <td class="table__value">Ivanov84@gmail.com</td>
+                </tr>
+                <tr class="table__row">
+                  <td class="table__field">Адрес доставки</td>
+                  <td class="table__value">Москва, ул. Ленина, 21, кв. 33</td>
+                </tr>
+                <tr class="table__row">
+                  <td class="table__field">Способ оплаты</td>
+                  <td class="table__value">Картой при получении</td>
+                </tr>
+                <tr class="table__row">
+                  <td class="table__field">Способ получения</td>
+                  <td class="table__value">Доставка</td>
+                </tr>
+              </table>
 
-            <a href="/" class="details__btn">На главную</a>
+              <a href="/" class="details__btn">На главную</a>
+            </div>
           </div>
         </div>
       </div>
@@ -515,12 +523,14 @@
       </a>
 
       <div class="footer__contacts contacts">
-        <svg width="12" height="14" viewBox="0 0 12 14" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path
-            d="M2.48566 0.544454L3.59251 0.210739C3.95781 0.100777 4.35064 0.127457 4.69772 0.285803C5.0448 0.444148 5.32242 0.723345 5.4788 1.07131L6.2548 2.79703C6.38948 3.09641 6.42702 3.43046 6.36215 3.75227C6.29727 4.07408 6.13324 4.36749 5.89309 4.59131L4.71194 5.69188C4.55366 5.84217 4.67366 6.42788 5.25194 7.43017C5.8308 8.43303 6.27823 8.8296 6.48451 8.76788L8.03194 8.29474C8.34561 8.1988 8.68143 8.20341 8.99234 8.30794C9.30325 8.41246 9.57365 8.61166 9.76566 8.8776L10.8685 10.4062C11.0913 10.7148 11.1944 11.0939 11.1588 11.4728C11.1232 11.8518 10.9512 12.205 10.6748 12.4667L9.82223 13.2742C9.547 13.5348 9.20756 13.7178 8.83854 13.8044C8.46952 13.891 8.08412 13.8782 7.72166 13.7673C5.93537 13.2205 4.28109 11.5976 2.73651 8.9216C1.18851 6.2416 0.603943 3.98103 1.01137 2.13417C1.09355 1.76203 1.27348 1.41853 1.53263 1.1391C1.79177 0.859662 2.12075 0.654394 2.48566 0.544454Z"
-            fill="white" />
-        </svg>
-        <a href="tel:+7 (939) 839 12 97" class="contacts__phone"><span>+7 (939) 839 12 97</span></a>
+        <a href="tel:+7 (939) 839 12 97" class="contacts__phone">
+          <svg width="12" height="14" viewBox="0 0 12 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path
+              d="M2.48566 0.544454L3.59251 0.210739C3.95781 0.100777 4.35064 0.127457 4.69772 0.285803C5.0448 0.444148 5.32242 0.723345 5.4788 1.07131L6.2548 2.79703C6.38948 3.09641 6.42702 3.43046 6.36215 3.75227C6.29727 4.07408 6.13324 4.36749 5.89309 4.59131L4.71194 5.69188C4.55366 5.84217 4.67366 6.42788 5.25194 7.43017C5.8308 8.43303 6.27823 8.8296 6.48451 8.76788L8.03194 8.29474C8.34561 8.1988 8.68143 8.20341 8.99234 8.30794C9.30325 8.41246 9.57365 8.61166 9.76566 8.8776L10.8685 10.4062C11.0913 10.7148 11.1944 11.0939 11.1588 11.4728C11.1232 11.8518 10.9512 12.205 10.6748 12.4667L9.82223 13.2742C9.547 13.5348 9.20756 13.7178 8.83854 13.8044C8.46952 13.891 8.08412 13.8782 7.72166 13.7673C5.93537 13.2205 4.28109 11.5976 2.73651 8.9216C1.18851 6.2416 0.603943 3.98103 1.01137 2.13417C1.09355 1.76203 1.27348 1.41853 1.53263 1.1391C1.79177 0.859662 2.12075 0.654394 2.48566 0.544454Z"
+              fill="white" />
+          </svg>
+          <span>+7 (939) 839 12 97</span>
+        </a>
 
         <ul class="contacts__list">
           <li class="contacts__item">
