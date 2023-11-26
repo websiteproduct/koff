@@ -21,9 +21,7 @@ export class Footer {
             return;
         }
 
-        const logo = this.getLogo();
-
-        this.containerElement.append(logo);
+        this.getLogo();
 
         document.body.append(this.element);
         this.isMounted = true;
@@ -45,10 +43,8 @@ export class Footer {
         imgLogo.alt = 'Логотип мебельного маркета Koff';
 
         logo.append(imgLogo);
-
-        this.containerElement.insertAdjacentHTML('beforeend', this.getHTML());
-
-        return logo;
+        this.containerElement.append(logo);
+        this.containerElement.insertAdjacentHTML('beforeend', this.getHTML());        
     }
 
     getHTML() {
