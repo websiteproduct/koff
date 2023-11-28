@@ -69,11 +69,41 @@
         border: 1px solid #780096;
         border-radius: 32px;
         width: 100%;
+
+        &:hover {
+            background-color: #9200B7;
+            border-color: #9200B7;
+            color: #fff;
+        }
+
+        &:active {
+            border-color: #C0F;
+            background-color: transparent;
+            outline: 0;
+            color: #780096;
+        }
     }
 
     &__favorite {
         position: absolute;
         top: 12px;
         right: 12px;
+
+        &:hover,
+        &_active {
+            color: #780096;
+
+            svg {
+                fill: #780096;
+            }
+        }
+
+        &:active {
+            color: #C0F;
+
+            svg {
+                fill: #C0F;
+            }
+        }
     }
 }
