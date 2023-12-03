@@ -1,7 +1,6 @@
 export class StorageService {
     constructor(key) {
         this.key = key;
-        console.log('key', key);
     }
 
     get(itemName) {

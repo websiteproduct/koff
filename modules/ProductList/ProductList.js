@@ -1,4 +1,3 @@
-import { API_URL } from "../../const";
 import { Card } from "../../features/Card/Card";
 import { addContainer } from "../addContainer";
 
@@ -27,7 +26,7 @@ export class ProductList {
         titleElem.className = title ? 'goods__title' : 'goods__title visually-hidden';
 
         this.containerElement.append(titleElem);
-        
+
         this.updateListElem(data);
 
         if (this.isMounted) {
