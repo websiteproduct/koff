@@ -9,6 +9,7 @@ import { ProductList } from "./modules/ProductList/ProductList";
 import { ApiService } from "./services/ApiService";
 import { Catalog } from "./modules/Catalog/Catalog";
 import { FavoriteService } from "./services/StorageService";
+import { Pagination } from "./features/Pagination/Pagination";
 
 const productSider = () => {
   Promise.all([
@@ -64,20 +65,22 @@ const init = () => {
           new ProductList().unmount();
           done();
         },
-        already() {
-          console.log("already");
+        already(match) {
+          match.route.handler(match);
         },
       }
     )
     .on(
       "/category",
-      async ({ params: { slug } }) => {
-        const products = await api.getProducts();
-        new ProductList().mount(
-          new Main().element,
-          products.filter((item) => item.category === slug),
-          slug
-        );
+      async ({ params: { slug, page } }) => {
+        const { data: products, pagination } = await api.getProducts({
+          category: slug,
+          page: page || 1,
+        });
+        new ProductList().mount(new Main().element, products, slug);
+        new Pagination()
+          .mount(new ProductList().containerElement)
+          .update(pagination);
         router.updatePageLinks();
       },
       {
@@ -93,9 +96,16 @@ const init = () => {
     .on(
       "/favorite",
       async () => {
-        const list = storage.get();
-        const products = await api.getProducts({ list });
-        new ProductList().mount(new Main().element, products.data, "Избранное");
+        const favorite = storage.get();
+        const { data: products } = await api.getProducts({
+          list: favorite.join(","),
+        });
+        new ProductList().mount(
+          new Main().element,
+          products,
+          "Избранное",
+          "В избранном ничего нет."
+        );
         router.updatePageLinks();
       },
       {
@@ -103,8 +113,9 @@ const init = () => {
           new ProductList().unmount();
           done();
         },
-        already() {
+        already(match) {
           console.log("already");
+          match.route.handler(match);
         },
       }
     )

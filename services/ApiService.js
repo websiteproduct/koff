@@ -47,19 +47,8 @@ export class ApiService {
     }
   }
 
-  async getProducts(params = {}) {
-    //page = 1, limit = 12, list, category, q
-    if (params.list) {
-      params.list = params.list.join(",");
-    }
+  async getProducts(params) {
     return await this.getData("api/products", params);
-    // return await this.getData('api/products', {
-    //     page,
-    //     limit,
-    //     list,
-    //     category,
-    //     q
-    // })
   }
 
   async getProductCategories() {
