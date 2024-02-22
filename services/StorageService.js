@@ -1,88 +1,88 @@
 export class StorageService {
-    constructor(key) {
-        this.key = key;
+  constructor(key) {
+    this.key = key;
+  }
+
+  get(itemName) {
+    const value = localStorage.getItem(itemName);
+
+    if (value) {
+      return value;
     }
 
-    get(itemName) {
-        const value = localStorage.getItem(itemName);
+    return null;
+  }
 
-        if (value) {
-            return value;
-        }
-
-        return null;
+  set(data) {
+    if (typeof data === "object") {
+      data = JSON.stringify(data);
     }
 
-    set(data) {
-        if (typeof data === 'object') {
-            data = JSON.stringify(data);
-        }
+    localStorage.setItem(this.key, data);
+  }
 
-        localStorage.setItem(this.key, data);
-    }
-
-    delete() {
-        localStorage.removeItem(this.key);
-    }
+  delete() {
+    localStorage.removeItem(this.key);
+  }
 }
 
 export class FavoriteService extends StorageService {
-    static instance;
+  static instance;
 
-    constructor(key = 'favorite') {
-        if (!FavoriteService.instance) {
-            super(key);
-            this.favorite = new Set(this.get());
-            FavoriteService.instance = this;
-        }
-
-        return FavoriteService.instance;
+  constructor(key = "favorite") {
+    if (!FavoriteService.instance) {
+      super(key);
+      this.favorite = new Set(this.get());
+      FavoriteService.instance = this;
     }
 
-    get() {
-        const data = super.get('favorite');
+    return FavoriteService.instance;
+  }
 
-        if (data) {
-            const favorite = JSON.parse(data);
+  get() {
+    const data = super.get("favorite");
 
-            if (Array.isArray(favorite)) {
-                return favorite;
-            }
-        }
+    if (data) {
+      const favorite = JSON.parse(data);
 
-        return [];
+      if (Array.isArray(favorite)) {
+        return favorite;
+      }
     }
 
-    add(value) {
-        this.favorite.add(value);
-        this.set([...this.favorite]);
+    return [];
+  }
+
+  add(value) {
+    this.favorite.add(value);
+    this.set([...this.favorite]);
+  }
+
+  remove(value) {
+    if (this.check(value)) {
+      this.favorite.delete(value);
+      this.set([...this.favorite]);
+
+      return true;
     }
 
-    remove(value) {
-        if (this.check(value)) {
-            this.favorite.delete(value);
-            this.set([...this.favorite]);
-            
-            return true;
-        }
+    return false;
+  }
 
-        return false;
-    }
-
-    check(value) {
-        return this.favorite.has(value);
-    }
+  check(value) {
+    return this.favorite.has(value);
+  }
 }
 
 export class AccessKeyService extends StorageService {
-    static instance;
+  static instance;
 
-    constructor(key = 'accessKey') {
-        if (!AccessKeyService.instance) {
-            super(key);
-            AccessKeyService.instance = this;
-        }
-
-        return FavoriteService.instance;
+  constructor(key = "accessKey") {
+    if (!AccessKeyService.instance) {
+      super(key);
+      AccessKeyService.instance = this;
     }
+
+    return AccessKeyService.instance;
+  }
 }

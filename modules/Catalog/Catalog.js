@@ -1,55 +1,63 @@
+import { ApiService } from "../../services/ApiService";
 import { addContainer } from "../addContainer";
 
 export class Catalog {
-    static instance = null;
+  static instance = null;
 
-    constructor() {
-        if (!Catalog.instance) {
-            Catalog.instance = this;
-            this.element = document.createElement('nav');
-            this.element.classList.add('catalog');
-            this.elementContainer = addContainer(this.element, 'catalog__container');
-            this.isMounted = false;
-        }
-
-        return Catalog.instance;
+  constructor() {
+    if (!Catalog.instance) {
+      Catalog.instance = this;
+      this.element = document.createElement("nav");
+      this.element.classList.add("catalog");
+      this.elementContainer = addContainer(this.element, "catalog__container");
+      this.isMounted = false;
     }
 
-    mount(parent, data) {
-        if (this.isMounted) {
-            return;
-        }
+    return Catalog.instance;
+  }
 
-        this.renderListElem(data);
+  async getData() {
+    this.catalogData = await new ApiService().getProductCategories();
+  }
 
-        parent.prepend(this.element);
-        this.isMounted = true;
+  async mount(parent) {
+    if (this.isMounted) {
+      return;
     }
 
-    unmount() {
-        this.element.remove();
-        this.isMounted = false;
+    if (!this.catalogData) {
+      await this.getData();
+      this.renderListElem(this.catalogData);
     }
 
-    renderListElem(data) {
-        const listElem = document.createElement('ul');
-        listElem.classList.add('catalog__list');
+    parent.prepend(this.element);
+    this.isMounted = true;
+  }
 
-        const listItems = data.map(item => {
-            const listItemElem = document.createElement('li');
-            listItemElem.classList.add('catalog__item');
+  unmount() {
+    this.element.remove();
+    this.isMounted = false;
+  }
 
-            const link = document.createElement('a');
-            link.classList.add('catalog__link');
-            link.href = `/category?slug=${item}`;
-            link.textContent = item;
+  renderListElem(data) {
+    const listElem = document.createElement("ul");
+    listElem.classList.add("catalog__list");
 
-            listItemElem.append(link);
+    const listItems = data.map((item) => {
+      const listItemElem = document.createElement("li");
+      listItemElem.classList.add("catalog__item");
 
-            return listItemElem;
-        })
+      const link = document.createElement("a");
+      link.classList.add("catalog__link");
+      link.href = `/category?slug=${item}`;
+      link.textContent = item;
 
-        listElem.append(...listItems);
-        this.elementContainer.append(listElem);
-    }
+      listItemElem.append(link);
+
+      return listItemElem;
+    });
+
+    listElem.append(...listItems);
+    this.elementContainer.append(listElem);
+  }
 }
