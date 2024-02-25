@@ -1,6 +1,7 @@
 import { LikeSvg } from "../../features/LikeSvg/LikeSvg";
 import { Logo } from "../../features/Logo/Logo";
 import { router } from "../../main";
+import { ApiService } from "../../services/ApiService";
 import { addContainer } from "../addContainer";
 
 export class Header {
@@ -18,7 +19,7 @@ export class Header {
     return Header.instance;
   }
 
-  mount() {
+  async mount() {
     if (this.isMounted) {
       return;
     }
@@ -30,7 +31,11 @@ export class Header {
     this.containerElement.append(logo, searchForm, navigation);
 
     document.body.append(this.element);
+
     this.isMounted = true;
+
+    let cartData = await new ApiService().getCart();
+    this.changeCount(cartData.totalCount);
   }
 
   unmount() {
@@ -133,7 +138,6 @@ export class Header {
   }
 
   changeCount(n) {
-    // todo n
     this.countElement.textContent = `(${n})`;
   }
 }

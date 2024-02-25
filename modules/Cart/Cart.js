@@ -1,6 +1,7 @@
 import { API_URL } from "../../const";
 import { debounce } from "../../helper";
 import { ApiService } from "../../services/ApiService";
+import { Header } from "../Header/Header";
 import { addContainer } from "../addContainer";
 
 export class Cart {
@@ -24,7 +25,7 @@ export class Cart {
       return;
     }
 
-    this.elementContainer.textContent = '';
+    this.elementContainer.textContent = "";
 
     const title = document.createElement("h2");
     title.classList.add("cart__title");
@@ -56,12 +57,13 @@ export class Cart {
     this.isMounted = false;
   }
 
-  updateCart(id, quantity) {
+  async updateCart(id, quantity) {
     if (quantity === 0) {
-      new ApiService().deleteProductFromCart(id);
+      let result = await new ApiService().deleteProductFromCart(id);
       this.cartData.products = this.cartData.products.filter(
         (item) => item.id !== id
       );
+      new Header().changeCount(result.data.totalCount);
     } else {
       new ApiService().updateQuantityProductToCart(id, quantity);
 
