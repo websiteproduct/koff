@@ -1,57 +1,58 @@
 import { LikeSvg } from "../../features/LikeSvg/LikeSvg";
 import { Logo } from "../../features/Logo/Logo";
+import { router } from "../../main";
 import { addContainer } from "../addContainer";
 
 export class Header {
-    static instance = null;
+  static instance = null;
 
-    constructor() {
-        if (!Header.instance) {
-            Header.instance = this;
-            this.element = document.createElement('header');
-            this.element.classList.add('header');
-            this.containerElement = addContainer(this.element, 'header__container');
-            this.isMounted = false;
-        }
-
-        return Header.instance;
+  constructor() {
+    if (!Header.instance) {
+      Header.instance = this;
+      this.element = document.createElement("header");
+      this.element.classList.add("header");
+      this.containerElement = addContainer(this.element, "header__container");
+      this.isMounted = false;
     }
 
-    mount() {
-        if (this.isMounted) {
-            return;
-        }
+    return Header.instance;
+  }
 
-        const logo = new Logo('header').create();
-        const searchForm = this.getSearchForm();
-        const navigation = this.getNavigation();
-
-        this.containerElement.append(logo, searchForm, navigation);
-
-        document.body.append(this.element);
-        this.isMounted = true;
+  mount() {
+    if (this.isMounted) {
+      return;
     }
 
-    unmount() {
-        this.element.remove();
-        this.isMounted = false;
-    }
+    const logo = new Logo("header").create();
+    const searchForm = this.getSearchForm();
+    const navigation = this.getNavigation();
 
-    getSearchForm() {
-        const searchForm = document.createElement('form');
-        searchForm.classList.add('header__search');
-        searchForm.method = 'get';
+    this.containerElement.append(logo, searchForm, navigation);
 
-        const input = document.createElement('input');
-        input.classList.add('header__input');
-        input.name = 'search';
-        input.placeholder = 'Введите запрос';
-        input.type = 'search';
+    document.body.append(this.element);
+    this.isMounted = true;
+  }
 
-        const button = document.createElement('button');
-        button.classList.add('header__btn');
-        button.type = 'submit';
-        button.innerHTML = `
+  unmount() {
+    this.element.remove();
+    this.isMounted = false;
+  }
+
+  getSearchForm() {
+    const searchForm = document.createElement("form");
+    searchForm.classList.add("header__search");
+    searchForm.method = "get";
+
+    const input = document.createElement("input");
+    input.classList.add("header__input");
+    input.name = "search";
+    input.placeholder = "Введите запрос";
+    input.type = "search";
+
+    const button = document.createElement("button");
+    button.classList.add("header__btn");
+    button.type = "submit";
+    button.innerHTML = `
             <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path
                 d="M7.66671 13.9999C11.1645 13.9999 14 11.1644 14 7.66659C14 4.16878 11.1645 1.33325 7.66671 1.33325C4.1689 1.33325 1.33337 4.16878 1.33337 7.66659C1.33337 11.1644 4.1689 13.9999 7.66671 13.9999Z"
@@ -61,44 +62,52 @@ export class Header {
             </svg>
         `;
 
-        searchForm.append(input, button);
+    searchForm.append(input, button);
 
-        return searchForm;
-    }
+    searchForm.addEventListener("submit", (e) => {
+      e.preventDefault();
 
-    getNavigation() {
-        const navigation = document.createElement('nav');
-        navigation.classList.add('header__control');
+      router.navigate(`/search?q=${input.value}`);
+    });
 
-        const favoriteLink = document.createElement('a');
-        favoriteLink.classList.add('header__link');
-        favoriteLink.href = '/favorite';
+    return searchForm;
+  }
 
-        const favoriteText = document.createElement('span');
-        favoriteText.textContent = 'Избранное';
-        favoriteText.classList.add('header__link-text');
+  getNavigation() {
+    const navigation = document.createElement("nav");
+    navigation.classList.add("header__control");
 
-        favoriteLink.append(favoriteText);
-        
-        LikeSvg().then(svg => {
-            favoriteLink.append(svg);
-        })
+    const favoriteLink = document.createElement("a");
+    favoriteLink.classList.add("header__link");
+    favoriteLink.href = "/favorite";
 
-        const cartLink = document.createElement('a');
-        cartLink.classList.add('header__link');
-        cartLink.href = '/cart';
+    const favoriteText = document.createElement("span");
+    favoriteText.textContent = "Избранное";
+    favoriteText.classList.add("header__link-text");
 
-        const linkText = document.createElement('span');
-        linkText.classList.add('header__link-text');
-        linkText.textContent = 'Корзина';
+    favoriteLink.append(favoriteText);
 
-        const countElement = document.createElement('span');
-        countElement.classList.add('header__count');
-        countElement.textContent = '(0)';
+    LikeSvg().then((svg) => {
+      favoriteLink.append(svg);
+    });
 
-        cartLink.append(linkText, countElement);
+    const cartLink = document.createElement("a");
+    cartLink.classList.add("header__link");
+    cartLink.href = "/cart";
 
-        cartLink.insertAdjacentHTML('beforeend', `
+    const linkText = document.createElement("span");
+    linkText.classList.add("header__link-text");
+    linkText.textContent = "Корзина";
+
+    const countElement = document.createElement("span");
+    countElement.classList.add("header__count");
+    countElement.textContent = "(0)";
+
+    cartLink.append(linkText, countElement);
+
+    cartLink.insertAdjacentHTML(
+      "beforeend",
+      `
             <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path d="M5.87329 1.33325L3.45996 3.75325" stroke="#1C1C1C" stroke-miterlimit="10" stroke-linecap="round"
                 stroke-linejoin="round" />
@@ -113,18 +122,18 @@ export class Header {
                 d="M2.33337 6.66675L3.27337 12.4267C3.48671 13.7201 4.00004 14.6667 5.90671 14.6667H9.92671C12 14.6667 12.3067 13.7601 12.5467 12.5067L13.6667 6.66675"
                 stroke="#1C1C1C" stroke-linecap="round" />
             </svg>
-        `)
+        `
+    );
 
-        navigation.append(favoriteLink, cartLink);
+    navigation.append(favoriteLink, cartLink);
 
-        this.countElement = countElement;
+    this.countElement = countElement;
 
-        return navigation;
-    }
+    return navigation;
+  }
 
-    changeCount(n) {
-        // todo n
-        this.countElement.textContent = `(${n})`;
-    }
-
+  changeCount(n) {
+    // todo n
+    this.countElement.textContent = `(${n})`;
+  }
 }

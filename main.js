@@ -13,6 +13,7 @@ import { Pagination } from "./features/Pagination/Pagination";
 import { BreadCrumbs } from "./features/BreadCrumbs/BreadCrumbs";
 import { ProductCard } from "./modules/ProductCard/ProductCard";
 import { productSider } from "./features/productSlider/productSlider";
+import { Cart } from "./modules/Cart/Cart";
 
 export const router = new Navigo("/", { linksSelector: 'a[href^="/"]' });
 
@@ -53,9 +54,12 @@ const init = () => {
         });
         new BreadCrumbs().mount(new Main().element, [{ text: slug }]);
         new ProductList().mount(new Main().element, products, slug);
-        new Pagination()
-          .mount(new ProductList().containerElement)
-          .update(pagination);
+
+        if (pagination?.totalProducts > pagination?.limit) {
+          new Pagination()
+            .mount(new ProductList().containerElement)
+            .update(pagination);
+        }
 
         router.updatePageLinks();
       },
@@ -66,8 +70,8 @@ const init = () => {
           new Catalog().unmount();
           done();
         },
-        already() {
-          console.log("already");
+        already(match) {
+          match.route.handler(match);
         },
       }
     )
@@ -89,7 +93,7 @@ const init = () => {
           "В избранном ничего нет."
         );
 
-        if (products?.length > 0) {
+        if (pagination?.totalProducts > pagination?.limit) {
           new Pagination()
             .mount(new ProductList().containerElement)
             .update(pagination);
@@ -110,15 +114,48 @@ const init = () => {
         },
       }
     )
-    .on("/search", () => {
-      console.log("search");
-    })
+    .on(
+      "/search",
+      async ({ params: { q } }) => {
+        new Catalog().mount(new Main().element);
+        const { data: products, pagination } = await api.getProducts({
+          q,
+        });
+
+        new BreadCrumbs().mount(new Main().element, [{ text: "Поиск" }]);
+        new ProductList().mount(
+          new Main().element,
+          products,
+          `Поиск: ${q}`,
+          `Поиск по вашему запросу "${q}" не дал результатов. Попробуйте еще`
+        );
+
+        if (products?.length > 0) {
+          new Pagination()
+            .mount(new ProductList().containerElement)
+            .update(pagination);
+        }
+
+        router.updatePageLinks();
+      },
+      {
+        leave(done) {
+          new BreadCrumbs().unmount();
+          new ProductList().unmount();
+          new Catalog().unmount();
+          done();
+        },
+        already(match) {
+          match.route.handler(match);
+        },
+      }
+    )
     .on(
       "/product/:id",
       async (obj) => {
         new Catalog().mount(new Main().element);
         const data = await api.getProductById(obj.data.id);
-        console.log("data", data);
+
         new BreadCrumbs().mount(new Main().element, [
           { text: data.category, href: `/category?slug=${data.category}` },
           { text: data.name },
@@ -135,9 +172,28 @@ const init = () => {
         },
       }
     )
-    .on("/cart", () => {
-      console.log("cart");
-    })
+    .on(
+      "/cart",
+      async () => {
+        const cartItems = await api.getCart();
+        new Cart().mount(
+          new Main().element,
+          cartItems,
+          "Корзина пуста, добавьте товары"
+        );
+      },
+      {
+        leave(done) {
+          new Cart().unmount();
+          done();
+        },
+      },
+      {
+        already(match) {
+          match.route.handler(match);
+        },
+      }
+    )
     .on("/order", () => {
       new Order().mount();
       console.log("order");
